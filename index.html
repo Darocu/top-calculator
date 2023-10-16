@@ -11,12 +11,13 @@
         document.addEventListener('DOMContentLoaded', function () {
             const expressionDisplay = document.getElementById('expression');
             const answerDisplay = document.getElementById('answer');
+            document.getElementById('answer').hidden = true; //Hides answer field as all outputs are in expression.
 
             let firstNumber = '';
             let secondNumber = '';
             let actionOperator = '';
 
-            function clear() {
+            function clear() { //Clears the display
                 firstNumber = '';
                 secondNumber = '';
                 actionOperator = '';
@@ -24,32 +25,35 @@
                 answerDisplay.innerText = '';
             }
 
-            function updateDisplay() {
+            function updateDisplay() { //Updates the display 
                 expressionDisplay.innerText = firstNumber + ' ' + 
                                             (actionOperator ? actionOperator : '') + 
                                             ' ' + secondNumber;
             }
 
             function operate() {
-                const num1 = parseFloat(firstNumber);
-                const num2 = parseFloat(secondNumber);
+                const num1 = parseFloat(firstNumber); //Declare first number
+                const num2 = parseFloat(secondNumber); //Declare second number
 
-                if (actionOperator === '+') {
+                if (actionOperator === '+') { //Addition operator
                     answerDisplay.innerText = num1 + num2;
                 }
-                else if (actionOperator === '-') {
+                else if (actionOperator === '-') { //Subtraction operator
                     answerDisplay.innerText = num1 - num2;
                 }
-                else if (actionOperator === 'x') {
+                else if (actionOperator === 'x') { //Multiplication operator
                     answerDisplay.innerText = num1 * num2;
                 }
-                else if (actionOperator === '÷') {
-                    if (num2 === 0) {
-                        answerDisplay.innerText = 'Error';
+                else if (actionOperator === '÷') { //Division operator
+                    if (num2 === 0) { //Divide by 0 validator.
+                        answerDisplay.innerText = 'Hey, everyone, I just tried to do something very silly!';
                     }
-                    else {
+                    else { //Validator passed perform division operator
                         answerDisplay.innerText = num1 / num2;
                     }
+                }
+                else if (actionOperator === '^') { //Exponentiation operator
+                    answerDisplay.innerText = num1 ** num2;
                 }
             }
 
@@ -62,14 +66,14 @@
                     if ('+-x÷'.includes(value)) { //Operator button clicked
                         if (firstNumber && secondNumber) {
                         operate();
-                        firstNumber = answerDisplay.innerText;
-                        secondNumber = '';
-                        }
-                        else if (firstNumber) {
-                        secondNumber = firstNumber;
-                        firstNumber = '';
+                        firstNumber = expressionDisplay.innerText;
                         }
                         actionOperator = value;
+                        updateDisplay();
+                    }
+                    else if (value === 'y¹') { //Exponentiation button clicked
+                        actionOperator = '^';
+                        operate();
                         updateDisplay();
                     }
                     else if (value === '=') { //Equals button clicked
@@ -79,8 +83,22 @@
                         actionOperator = '';
                         updateDisplay();
                     }
-                    else if (value === 'Clear') { //Clear button clicked
+                    else if (value === 'C') { //Clear button clicked
                         clear();
+                    }
+                    else if (value === 'DEL') { //Delete button clicked
+                        if (secondNumber != '') { //If second number has value, delete
+                            secondNumber = '';
+                            updateDisplay();
+                        }
+                        else if (actionOperator != '') { //If operator has value, delete
+                            actionOperator = '';
+                            updateDisplay();
+                        }
+                        else { //If first number has value, delete
+                            firstNumber = '';
+                            updateDisplay();
+                        }
                     }
                     else { //Number or decimal button clicked.
                         if (actionOperator) {
@@ -98,17 +116,15 @@
 
     <div class="container">
         <h1 class = "calcHeader">Calculator</h1>
-
-
         <div class="calcContainer">
-            <div class="calcScreen">
+            <div class="calcExpression">
                 <div id="expression"></div>
                 <div id="answer"></div>
             </div>
 
             <div class="calcGrid">
-                <button id = "clear" class="calcButton">Clear</button>
-                <button id = "backspace" class="calcButton">Del</button>
+                <button id = "clear" class="calcButton">C</button>
+                <button id = "backspace" class="calcButton">DEL</button>
                 <button id = "power" class="calcButton">y¹</button>
                 <button id = "divide" class="calcButton">÷</button>
                 <button id = "7" class="calcButton">7</button>
