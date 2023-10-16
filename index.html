@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOP Calculator</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const expressionDisplay = document.getElementById('expression');
+            const answerDisplay = document.getElementById('answer');
+
+            let firstNumber = '';
+            let secondNumber = '';
+            let actionOperator = '';
+
+            function clear() {
+                firstNumber = '';
+                secondNumber = '';
+                actionOperator = '';
+                expressionDisplay.innerText = '';
+                answerDisplay.innerText = '';
+            }
+
+            function updateDisplay() {
+                expressionDisplay.innerText = firstNumber + ' ' + 
+                                            (actionOperator ? actionOperator : '') + 
+                                            ' ' + secondNumber;
+            }
+
+            function operate() {
+                const num1 = parseFloat(firstNumber);
+                const num2 = parseFloat(secondNumber);
+
+                if (actionOperator === '+') {
+                    answerDisplay.innerText = num1 + num2;
+                }
+                else if (actionOperator === '-') {
+                    answerDisplay.innerText = num1 - num2;
+                }
+                else if (actionOperator === 'x') {
+                    answerDisplay.innerText = num1 * num2;
+                }
+                else if (actionOperator === '÷') {
+                    if (num2 === 0) {
+                        answerDisplay.innerText = 'Error';
+                    }
+                    else {
+                        answerDisplay.innerText = num1 / num2;
+                    }
+                }
+            }
+
+            //Event listeners for operator buttons
+            const operatorButtons = document.querySelectorAll('.calcButton');
+            operatorButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const value = button.innerText;
+
+                    if ('+-x÷'.includes(value)) { //Operator button clicked
+                        if (firstNumber && secondNumber) {
+                        operate();
+                        firstNumber = answerDisplay.innerText;
+                        secondNumber = '';
+                        }
+                        else if (firstNumber) {
+                        secondNumber = firstNumber;
+                        firstNumber = '';
+                        }
+                        actionOperator = value;
+                        updateDisplay();
+                    }
+                    else if (value === '=') { //Equals button clicked
+                        operate();
+                        firstNumber = answerDisplay.innerText;
+                        secondNumber = '';
+                        actionOperator = '';
+                        updateDisplay();
+                    }
+                    else if (value === 'Clear') { //Clear button clicked
+                        clear();
+                    }
+                    else { //Number or decimal button clicked.
+                        if (actionOperator) {
+                            secondNumber += value;
+                        }
+                        else {
+                            firstNumber += value;
+                        }
+                        updateDisplay();
+                    }    
+                });
+            });
+        });
+    </script>
+
+    <div class="container">
+        <h1 class = "calcHeader">Calculator</h1>
+
+
+        <div class="calcContainer">
+            <div class="calcScreen">
+                <div id="expression"></div>
+                <div id="answer"></div>
+            </div>
+
+            <div class="calcGrid">
+                <button id = "clear" class="calcButton">Clear</button>
+                <button id = "backspace" class="calcButton">Del</button>
+                <button id = "power" class="calcButton">y¹</button>
+                <button id = "divide" class="calcButton">÷</button>
+                <button id = "7" class="calcButton">7</button>
+                <button id = "8" class="calcButton">8</button>
+                <button id = "9" class="calcButton">9</button>
+                <button id = "multiply" class="calcButton">x</button>
+                <button id = "4" class="calcButton">4</button>
+                <button id = "5" class="calcButton">5</button>
+                <button id = "6" class="calcButton">6</button>
+                <button id = "minus" class="calcButton">-</button>
+                <button id = "1" class="calcButton">1</button>
+                <button id = "2" class="calcButton">2</button>
+                <button id = "3" class="calcButton">3</button>
+                <button id = "plus" class="calcButton">+</button>
+                <button id = "0" class="calcButton">0</button>
+                <button id = "decimal" class="calcButton">.</button>
+                <button id = "equal" class="calcButton">=</button>
+                <button></button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 360px;
+    height: 600px;
+    background-color: black;
+}
+.calcHeader {
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+.calcContainer {
+    display:flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.calcContainer .calcScreen {
+    display: flex;
+    align-self: center;
+    background-color: white;
+    width: 300px;
+    height: 50px;
+}
+
+.calcGrid {
+    display:flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 25px;
+}
+
+.calcGrid button {
+    width: 50px;
+    height: 50px;
+}
